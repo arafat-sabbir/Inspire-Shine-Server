@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { TerrorMessages } from "../interface/error";
 
 const handleValidationError = (err: mongoose.Error.ValidationError) => {
-  console.log("from Validation error", err);
+  // console.log("from Validation error", err);
   const statusCode = 400;
   const errorMessages: TerrorMessages =
     (err.errors &&

@@ -3,7 +3,6 @@ import userService from "./user.service";
 import sendResponse from "../../utils/sendResponse";
 
 const registerUser = catchAsync(async (req, res) => {
-    console.log("controller", req.body);
   const user = await userService.register(req.body);
   sendResponse(res, {
     message: "User registered successfully",
