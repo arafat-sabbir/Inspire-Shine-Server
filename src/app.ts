@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 app.use(globalErrorHandler);
-app.use(baseRoutes);
+app.use("/api/v1", baseRoutes);
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello From Shine Server!");
 });
