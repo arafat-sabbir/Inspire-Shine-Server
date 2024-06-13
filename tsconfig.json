@@ -13,5 +13,5 @@
   },
   "include": ["src"],
   "exclude": ["node_modules"],
-  // "files": ["./src/app/interface/index.d.ts"]
+  "files": ["./src/app/interface/index.d.ts"]
 }
