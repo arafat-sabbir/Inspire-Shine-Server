@@ -6,7 +6,7 @@ const createServiceValidationSchema = z.object({
     description: z.string(),
     price: z.number(),
     duration: z.number(),
-    isDeleted: z.enum(["true", "false"]).optional(),
+    isDeleted: z.boolean().optional(),
   }),
 });
 
