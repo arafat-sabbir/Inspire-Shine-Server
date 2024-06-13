@@ -6,7 +6,6 @@ const create = async (payload: TService) => {
   const service = await ServiceModel.create(payload);
   return service;
 };
-
 const getAll = async () => {
   const services = await ServiceModel.find();
   if (!services) {
@@ -22,4 +21,12 @@ const getSingle = async (id: string) => {
   return service;
 };
 
-export const serviceService = { create, getAll, getSingle };
+const updateSingle = async (id: string, payload: Partial<TService>) => {
+  const updatedService = await ServiceModel.findByIdAndUpdate(id, payload, {
+    new: true,
+    runValidators: true,
+  });
+  return updatedService;
+};
+
+export const serviceService = { create, getAll, getSingle, updateSingle };
