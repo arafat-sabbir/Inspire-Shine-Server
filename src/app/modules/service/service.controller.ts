@@ -9,4 +9,22 @@ const create = catchAsync(async (req, res) => {
     data: service,
   });
 });
-export const serviceController = { create };
+
+const getSingle = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const service = await serviceService.getSingle(id);
+  sendResponse(res, {
+    message: "Service retrieved successfully",
+    data: service,
+  });
+});
+
+const getAll = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const service = await serviceService.getAll();
+  sendResponse(res, {
+    message: "Service retrieved successfully",
+    data: service,
+  });
+});
+export const serviceController = { create, getAll, getSingle };

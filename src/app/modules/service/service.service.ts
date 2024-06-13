@@ -1,3 +1,4 @@
+import AppError from "../../errors/AppError";
 import { TService } from "./service.interface";
 import ServiceModel from "./service.model";
 
@@ -8,9 +9,16 @@ const create = async (payload: TService) => {
 
 const getAll = async () => {
   const services = await ServiceModel.find();
+  if (!services) {
+    throw new AppError(404, "Services not found");
+  }
+  return services;
 };
 const getSingle = async (id: string) => {
-  const service = await ServiceModel.findById(id);
+  const service = await ServiceModel.findById({ _id: id });
+  if (!service) {
+    throw new AppError(404, "Service not found");
+  }
   return service;
 };
 
