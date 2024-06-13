@@ -13,7 +13,13 @@ router.post(
   serviceController.create
 );
 
-router.get('/:id',serviceController.getSingle)
-router.get('/',serviceController.getAll)
+router.get("/:id", serviceController.getSingle);
+router.get("/", serviceController.getAll);
+router.put(
+  "/:id",
+  AuthorizeRequest(USER_ROLE.admin),
+  validateRequest(serviceValidation.updateServiceValidationSchema),
+  serviceController.updateSingle
+);
 
 export const serviceRoutes = router;

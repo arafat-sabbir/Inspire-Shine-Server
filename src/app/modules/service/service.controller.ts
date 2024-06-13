@@ -27,4 +27,12 @@ const getAll = catchAsync(async (req, res) => {
     data: service,
   });
 });
-export const serviceController = { create, getAll, getSingle };
+const updateSingle = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const service = await serviceService.updateSingle(id, req.body);
+  sendResponse(res, {
+    message: "Service updated successfully",
+    data: service,
+  });
+});
+export const serviceController = { create, getAll, getSingle, updateSingle };
