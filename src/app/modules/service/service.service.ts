@@ -6,4 +6,12 @@ const create = async (payload: TService) => {
   return service;
 };
 
-export const serviceService = { create };
+const getAll = async () => {
+  const services = await ServiceModel.find();
+};
+const getSingle = async (id: string) => {
+  const service = await ServiceModel.findById(id);
+  return service;
+};
+
+export const serviceService = { create, getAll, getSingle };
