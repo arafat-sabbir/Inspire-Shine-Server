@@ -4,16 +4,19 @@ import UserModel from "../user/user.model";
 import { compareValue, generateToken } from "./auth.utils";
 
 const login = async (payload: TLoginUser) => {
-  const user = await UserModel.findOne({ email: payload.email });
+  console.log(payload.email);
+  const user = await UserModel.findOne({ email: payload.email }).select(
+    "+password"
+  );
   if (!user) throw new Error("User not found");
-  const isMatch = await compareValue(payload.password, user.password);
+  const isMatch = compareValue(payload.password, user.password);
   if (!isMatch) throw new Error("Password is incorrect");
   const token = generateToken(
     { role: user.role, userId: user.id },
     config.jwt_access_secret as string,
-    process.env.JWT_EXPIRY!
+    "1d"
   );
-  return { user, token };
+  return { user: user.toObject(), token };
 };
 
 export default { login };

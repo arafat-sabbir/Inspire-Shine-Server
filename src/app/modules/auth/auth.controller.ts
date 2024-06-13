@@ -4,10 +4,11 @@ import sendResponse from "../../utils/sendResponse";
 
 const login = catchAsync(async (req, res) => {
   const { user, token } = await authService.login(req.body);
+  const { password,...others } = user;
   sendResponse(res, {
     message: "User logged in successfully",
     token: token,
-    data: { user },
+    data: { others },
   });
 });
 export const authController = { login };
