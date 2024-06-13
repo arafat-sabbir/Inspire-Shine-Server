@@ -21,5 +21,6 @@ router.put(
   validateRequest(serviceValidation.updateServiceValidationSchema),
   serviceController.updateSingle
 );
+router.delete("/:id",  AuthorizeRequest(USER_ROLE.admin), serviceController.deleteSingle);
 
 export const serviceRoutes = router;

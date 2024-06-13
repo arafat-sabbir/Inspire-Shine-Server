@@ -7,7 +7,7 @@ const create = async (payload: TService) => {
   return service;
 };
 const getAll = async () => {
-  const services = await ServiceModel.find();
+  const services = await ServiceModel.find({ isDeleted: false });
   if (!services) {
     throw new AppError(404, "Services not found");
   }
@@ -18,15 +18,38 @@ const getSingle = async (id: string) => {
   if (!service) {
     throw new AppError(404, "Service not found");
   }
+  if (service.isDeleted) throw new AppError(404, "Service Has Been Deleted");
   return service;
 };
 
 const updateSingle = async (id: string, payload: Partial<TService>) => {
+  const service = await ServiceModel.findById({ _id: id });
+  if (service && service.isDeleted)
+    throw new AppError(404, "Service Has Been Deleted");
+  if (!service) throw new AppError(404, "Service not found");
   const updatedService = await ServiceModel.findByIdAndUpdate(id, payload, {
     new: true,
     runValidators: true,
   });
   return updatedService;
 };
-
-export const serviceService = { create, getAll, getSingle, updateSingle };
+const deleteSingle = async (id: string) => {
+  const deletedService = await ServiceModel.findByIdAndUpdate(
+    id,
+    {
+      isDeleted: true,
+    },
+    { new: true }
+  );
+  if (!deletedService) {
+    throw new AppError(404, "Service not found");
+  }
+  return deletedService;
+};
+export const serviceService = {
+  create,
+  getAll,
+  getSingle,
+  updateSingle,
+  deleteSingle,
+};

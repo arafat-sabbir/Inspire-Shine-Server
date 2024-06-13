@@ -35,4 +35,18 @@ const updateSingle = catchAsync(async (req, res) => {
     data: service,
   });
 });
-export const serviceController = { create, getAll, getSingle, updateSingle };
+const deleteSingle = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const service = await serviceService.deleteSingle(id);
+  sendResponse(res, {
+    message: "Service deleted successfully",
+    data: service,
+  });
+});
+export const serviceController = {
+  create,
+  getAll,
+  getSingle,
+  updateSingle,
+  deleteSingle,
+};
