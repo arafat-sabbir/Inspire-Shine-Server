@@ -1,14 +1,5 @@
 import { z } from "zod";
 
-// Function to parse and validate the input
-// const parseInput = (input: { body: { date: string | Date; [key: string]: any } }) => {
-//   // Convert the date string to a Date object if it's a string
-//   if (typeof input.body.date === "string") {
-//     input.body.date = new Date(input.body.date);
-//   }
-//   return input;
-// };
-
 const createSlotValidationSchema = z.object({
   body: z.object({
     service: z.string().optional(),

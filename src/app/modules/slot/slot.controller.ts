@@ -10,12 +10,12 @@ const create = catchAsync(async (req, res) => {
   });
 });
 
-const getByQuery = catchAsync(async (req, res) => {
-  const result = await slotService.getByQuery(req.query);
+const getAvailableByQuery = catchAsync(async (req, res) => {
+  const result = await slotService.getAvailableByQuery(req.query);
   sendResponse(res, {
     message: "Service created successfully",
     data: result,
   });
 });
 
-export const slotController = { create,getByQuery };
+export const slotController = { create,getAvailableByQuery };
