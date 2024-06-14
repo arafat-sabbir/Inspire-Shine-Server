@@ -1,7 +1,7 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 import { TBooking } from "./booking.interface";
 
-const bookingModel = new Schema<TBooking>({
+const bookingSchema = new Schema<TBooking>({
   customer: { type: Schema.Types.ObjectId, ref: "User", required: true },
   service: { type: Schema.Types.ObjectId, ref: "Service", required: true },
   slot: { type: Schema.Types.ObjectId, ref: "Slot", required: true },
@@ -26,3 +26,6 @@ const bookingModel = new Schema<TBooking>({
   manufacturingYear: { type: String, required: true },
   registrationPlate: { type: String, required: true },
 });
+
+const BookingModel = model<TBooking>("Booking", bookingSchema);
+export default BookingModel;
