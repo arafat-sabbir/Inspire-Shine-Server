@@ -3,15 +3,13 @@ import { TerrorMessages } from '../interface/error';
 
 const handleDuplicateError = (err: any) => {
   const statusCode = 400;
-  const match = err.message.match(/"([^"]*)"/);
-  const extractedMessage = match && match[1];
   const errorMessages: TerrorMessages = [
     {
       path: err.keyValue,
-      message: `${extractedMessage} already exists`,
+      message: err.message,
     },
   ];
-  return { statusCode, message: 'Duplicate Error', errorMessages };
+  return { statusCode, message: 'Duplicate Entry', errorMessages };
 };
 
 export default handleDuplicateError;

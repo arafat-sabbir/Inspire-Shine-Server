@@ -14,7 +14,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   res: Response<TGenericErrorResponse>,
   next
 ) => {
-    console.log(error,"From Global error hanlder");
+  console.log(error, "From Global error hanlder");
   // Set default values for status code, message, and error sources.
   let statusCode = 500;
   let stack = null;
@@ -31,7 +31,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     const simplifiedError = handleZodError(error);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
-    errorMessages = simplifiedError?.errorMessages;
+    errorMessages = simplifiedError?.errorMessages as TerrorMessages;
     stack = config.NODE_ENV === "development" && error.stack;
   } else if (error.name === "ValidationError") {
     const simplifiedError = handleValidationError(error);
@@ -43,7 +43,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     const simplifiedError = handleCastError(error);
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
-    errorMessages = simplifiedError?.errorMessages;
+    errorMessages = simplifiedError?.errorMessages as TerrorMessages;
     stack = config.NODE_ENV === "development" && error.stack;
   } else if (error.code === 11000) {
     const simplifiedError = handleDuplicateError(error);
@@ -73,12 +73,29 @@ const globalErrorHandler: ErrorRequestHandler = (
   }
 
   // Return a JSON response with the error message and status code.
-  return res.status(statusCode).json({
-    success: false,
-    message,
-    errorMessages,
-    ...(stack && { stack }),
-  });
+  if (!(error instanceof AppError) && !(error instanceof ZodError)) {
+    return res.status(statusCode).json({
+      success: false,
+      message,
+      errorMessages,
+      ...(stack && { stack }),
+    });
+  } else if (error instanceof ZodError) {
+    return res.status(statusCode).json({
+      success: false,
+      statusCode:400,
+      message,
+      errorMessages,
+      ...(stack && { stack }),
+    });
+  } else {
+    return res.status(statusCode).json({
+      success: false,
+      statusCode: error.statusCode,
+      message,
+      ...(error.data && { data: error.data }),
+    });
+  }
 };
 
 export default globalErrorHandler;

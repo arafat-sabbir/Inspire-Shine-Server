@@ -33,7 +33,7 @@ const getSingle = async (id: string) => {
   const result = await BookingModel.find({ customer: id }).populate(
     "service customer slot"
   );
-  if (!result || !result.length) throw new AppError(404, "No Data Found");
+  if (!result || !result.length) throw new AppError(404, "No Data Found", []);
   return result;
 };
 const bookingService = { create, getAll, getSingle };

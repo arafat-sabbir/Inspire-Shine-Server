@@ -18,7 +18,7 @@ const AuthorizeRequest = (...requiredRoles: TUserRole[]) => {
     const { role } = decoded as JwtPayload;
     if (!decoded) throw new AppError(401, "Unauthorized Access");
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(401, "You have no access to this route!");
+      throw new AppError(401, "You have no access to this route");
     }
     req.user = decoded as JwtPayload;
     next();
