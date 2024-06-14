@@ -20,14 +20,14 @@ const create = catchAsync(async (req, res) => {
 const getAll = catchAsync(async (req, res) => {
   const result = await bookingService.getAll();
   sendResponse(res, {
-    message: "Booking retrieved successfully",
+    message: "All bookings retrieved successfully",
     data: result,
   });
 });
 const getSingle = catchAsync(async (req, res) => {
   const result = await bookingService.getSingle(req.user.userId);
   sendResponse(res, {
-    message: "Booking retrieved successfully",
+    message: "User bookings retrieved successfully",
     data: result,
   });
 });

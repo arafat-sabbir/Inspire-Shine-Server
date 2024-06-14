@@ -3,6 +3,7 @@ import UserModel from "./user.model";
 
 const register = async (payload: TUser) => {
   const user = await UserModel.create(payload);
-  return user;
+  const { password, ...others } = user.toObject();
+  return others;
 };
 export default { register };

@@ -9,6 +9,10 @@ const create = async (payload: TBooking) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
+    const slot = await SlotModel.findByIdAndUpdate(payload.slot);
+    if (slot?.isBooked === "booked") {
+      throw new AppError(400, "Slot Already Booked");
+    }
     const result = await BookingModel.create([payload], { session });
     const updatedSlot = await SlotModel.findByIdAndUpdate(
       payload.slot,
@@ -22,12 +26,12 @@ const create = async (payload: TBooking) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    throw new AppError(404, "Booking Failed");
+    throw new AppError(400, "Slot Already Booked");
   }
 };
 const getAll = async () => {
   const result = await BookingModel.find({}).populate("service customer slot");
-  if(!result || !result.length) throw new AppError(404, "No Data Found", []);
+  if (!result || !result.length) throw new AppError(404, "No Data Found", []);
   return result;
 };
 const getSingle = async (id: string) => {

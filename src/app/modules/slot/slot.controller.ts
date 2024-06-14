@@ -5,7 +5,7 @@ import { slotService } from "./slot.service";
 const create = catchAsync(async (req, res) => {
   const result = await slotService.create(req.body);
   sendResponse(res, {
-    message: "Service created successfully",
+    message: "Slots created successfully",
     data: result,
   });
 });
@@ -13,7 +13,7 @@ const create = catchAsync(async (req, res) => {
 const getAvailableByQuery = catchAsync(async (req, res) => {
   const result = await slotService.getAvailableByQuery(req.query);
   sendResponse(res, {
-    message: "Service created successfully",
+    message: "Available slots retrieved successfully",
     data: result,
   });
 });

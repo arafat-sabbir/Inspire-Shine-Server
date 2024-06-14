@@ -1,4 +1,4 @@
-import AppError from "src/app/errors/AppError";
+import AppError from "../../errors/AppError";
 import { TSlot } from "./slot.interface";
 import SlotModel from "./slot.model";
 
