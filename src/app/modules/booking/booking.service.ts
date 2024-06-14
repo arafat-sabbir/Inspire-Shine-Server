@@ -1,3 +1,4 @@
+import AppError from "../../errors/AppError";
 import SlotModel from "../slot/slot.model";
 import { TBooking } from "./booking.interface";
 import BookingModel from "./booking.model";
@@ -27,5 +28,13 @@ const getAll = async () => {
   const result = await BookingModel.find({}).populate("service customer slot");
   return result;
 };
-const bookingService = { create, getAll };
+const getSingle = async (id: string) => {
+  console.log(id);
+  const result = await BookingModel.find({ customer: id }).populate(
+    "service customer slot"
+  );
+  if (!result || !result.length) throw new AppError(404, "No Data Found");
+  return result;
+};
+const bookingService = { create, getAll, getSingle };
 export default bookingService;

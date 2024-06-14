@@ -24,5 +24,12 @@ const getAll = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getSingle = catchAsync(async (req, res) => {
+  const result = await bookingService.getSingle(req.user.userId);
+  sendResponse(res, {
+    message: "Booking retrieved successfully",
+    data: result,
+  });
+});
 
-export const bookingController = { create,getAll };
+export const bookingController = { create, getAll, getSingle };

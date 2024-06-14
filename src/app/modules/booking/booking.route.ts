@@ -18,4 +18,10 @@ router.get(
   bookingController.getAll
 );
 
+router.get(
+  "/my-bookings",
+  AuthorizeRequest(USER_ROLE.user),
+  bookingController.getSingle
+);
+
 export const bookingRoutes = router;
