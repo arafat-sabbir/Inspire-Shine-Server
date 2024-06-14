@@ -12,4 +12,10 @@ router.post(
   bookingController.create
 );
 
+router.get(
+  "/bookings",
+  AuthorizeRequest(USER_ROLE.admin),
+  bookingController.getAll
+);
+
 export const bookingRoutes = router;

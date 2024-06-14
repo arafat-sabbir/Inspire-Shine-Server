@@ -3,7 +3,6 @@ import bookingService from "./booking.service";
 import sendResponse from "../../utils/sendResponse";
 
 const create = catchAsync(async (req, res) => {
-  const { user } = req;
   const { serviceId, slotId, ...others } = req.body;
   const data = {
     customer: req.user.userId,
