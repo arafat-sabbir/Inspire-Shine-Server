@@ -10,4 +10,12 @@ const create = catchAsync(async (req, res) => {
   });
 });
 
-export const slotController = { create };
+const getByQuery = catchAsync(async (req, res) => {
+  const result = await slotService.getByQuery(req.query);
+  sendResponse(res, {
+    message: "Service created successfully",
+    data: result,
+  });
+});
+
+export const slotController = { create,getByQuery };

@@ -18,7 +18,12 @@ const create = async (payload: TSlot) => {
     }
     
     return slots; // Return the array of slots
+};
+
+const getByQuery = async (query: any) => {
+    const slots = await SlotModel.find(query);
+    return slots;
   };
   
 
-export const slotService = { create };
+export const slotService = { create,getByQuery };

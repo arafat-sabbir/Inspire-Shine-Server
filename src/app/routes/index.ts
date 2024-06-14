@@ -20,7 +20,7 @@ const routes = [
     route: serviceRoutes,
   },
   {
-    path: "/services",
+    path: "",
     route: slotRoutes,
   },
 ];
