@@ -10,22 +10,24 @@ const create = async (payload: TBooking) => {
   session.startTransaction();
   try {
     const result = await BookingModel.create([payload], { session });
-    await SlotModel.findByIdAndUpdate(
+    const updatedSlot = await SlotModel.findByIdAndUpdate(
       payload.slot,
       { isBooked: "booked" },
       { session, new: true }
     );
+    if (!updatedSlot) throw new AppError(404, "No Data Found", []);
     await session.commitTransaction();
     session.endSession();
     return result[0].populate("service customer slot");
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    throw error;
+    throw new AppError(404, "Booking Failed");
   }
 };
 const getAll = async () => {
   const result = await BookingModel.find({}).populate("service customer slot");
+  if(!result || !result.length) throw new AppError(404, "No Data Found", []);
   return result;
 };
 const getSingle = async (id: string) => {

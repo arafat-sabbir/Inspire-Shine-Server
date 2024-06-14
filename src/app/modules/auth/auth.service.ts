@@ -1,3 +1,4 @@
+import AppError from "../../errors/AppError";
 import config from "../../config";
 import { TLoginUser } from "../user/user.interface";
 import UserModel from "../user/user.model";
@@ -8,7 +9,7 @@ const login = async (payload: TLoginUser) => {
   const user = await UserModel.findOne({ email: payload.email }).select(
     "+password"
   );
-  if (!user) throw new Error("User not found");
+  if (!user) throw new AppError(404, "No Data Found",[]);
   const isMatch = compareValue(payload.password, user.password);
   if (!isMatch) throw new Error("Password is incorrect");
   const token = generateToken(

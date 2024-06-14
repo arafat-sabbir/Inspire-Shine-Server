@@ -1,3 +1,4 @@
+import AppError from "src/app/errors/AppError";
 import { TSlot } from "./slot.interface";
 import SlotModel from "./slot.model";
 
@@ -14,10 +15,10 @@ const create = async (payload: TSlot) => {
     payload.startTime = `${i < 10 ? "0" : ""}${i}:00`;
     payload.endTime = `${i + 1 < 10 ? "0" : ""}${i + 1}:00`;
     const newSlot = await SlotModel.create(payload);
-    slots.push(newSlot); 
+    slots.push(newSlot);
   }
 
-  return slots; 
+  return slots;
 };
 
 const getAvailableByQuery = async (query: any) => {
@@ -36,7 +37,7 @@ const getAvailableByQuery = async (query: any) => {
     ...newQuery,
     isBooked: "available",
   }).populate("service");
-  console.log(slots.length);
+  if (!slots || !slots.length) throw new AppError(404, "No Data Found", []);
   return slots;
 };
 
