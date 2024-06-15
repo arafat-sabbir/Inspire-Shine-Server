@@ -3,7 +3,11 @@ import { TSlot } from "./slot.interface";
 import SlotModel from "./slot.model";
 
 const create = async (payload: TSlot) => {
-  const { startTime, endTime } = payload;
+  const { startTime, endTime,date } = payload;
+  const isSlotExist = await SlotModel.findOne({date,startTime})
+  if(isSlotExist){
+    throw new AppError(400,`Slot For Date ${date} And This Time Already Exist`);
+  }
   const startTimeNumber = parseInt(startTime);
   const endTimeNumber = parseInt(endTime);
   const serviceTime = (parseInt(endTime) * 60 - parseInt(startTime) * 60) / 60;

@@ -10,19 +10,24 @@ const AuthorizeRequest = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // Get the authorization token from the request headers
     const token = req.headers.authorization?.split(" ")[1];
+    console.log(token, "token")
     // If no token is provided, throw an unauthorized error
     if (!token) {
-      throw new AppError(401, "Unauthorized Access");
+      throw new AppError(401, "You have no access to this route");
     }
-    const decoded = jwt.verify(token, config.jwt_access_secret as string);
-    const { role } = decoded as JwtPayload;
-    if (!decoded) throw new AppError(401, "Unauthorized Access");
+    try {
+      jwt.verify(token, config.jwt_access_secret as string);
+    } catch (error) {
+      throw new AppError(401, "You have no access to this route");
+    }
+    const decoded = jwt.decode(token) as JwtPayload;
+    if (!decoded) throw new AppError(401, "You have no access to this route");
+    const { role } = decoded;
     if (requiredRoles && !requiredRoles.includes(role)) {
       throw new AppError(401, "You have no access to this route");
     }
-    req.user = decoded as JwtPayload;
+    req.user = decoded;
     next();
   });
 };
-
 export default AuthorizeRequest;

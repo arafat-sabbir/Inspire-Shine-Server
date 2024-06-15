@@ -10,6 +10,7 @@ const create = async (payload: TBooking) => {
   session.startTransaction();
   try {
     const slot = await SlotModel.findByIdAndUpdate(payload.slot);
+    console.log(slot);
     if (slot?.isBooked === "booked") {
       throw new AppError(400, "Slot Already Booked");
     }
@@ -23,10 +24,10 @@ const create = async (payload: TBooking) => {
     await session.commitTransaction();
     session.endSession();
     return result[0].populate("service customer slot");
-  } catch (error) {
+  } catch (error:any) {
     await session.abortTransaction();
     session.endSession();
-    throw new AppError(400, "Slot Already Booked");
+    throw new AppError(400, error.message as string);
   }
 };
 const getAll = async () => {

@@ -8,7 +8,7 @@ const login = catchAsync(async (req, res) => {
   sendResponse(res, {
     message: "User logged in successfully",
     token: token,
-    data: { others },
+    data: { ...others },
   });
 });
 export const authController = { login };

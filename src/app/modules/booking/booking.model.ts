@@ -25,7 +25,7 @@ const bookingSchema = new Schema<TBooking>(
     vehicleBrand: { type: String, required: true },
     vehicleModel: { type: String, required: true },
     manufacturingYear: { type: String, required: true },
-    registrationPlate: { type: String, required: true },
+    registrationPlate: { type: String, required: true,unique:true },
   },
   { timestamps: true }
 );
