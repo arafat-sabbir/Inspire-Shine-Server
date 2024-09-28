@@ -12,12 +12,13 @@ const login = async (payload: TLoginUser) => {
   if (!user) throw new AppError(404, "No Data Found",[]);
   const isMatch = compareValue(payload.password, user.password);
   if (!isMatch) throw new Error("Password is incorrect");
-  const token = generateToken(
-    { role: user.role, userId: user.id },
+  const { password, ...others } = user.toObject();
+  const accessToken = generateToken(
+    {  ...others},
     config.jwt_access_secret as string,
     "1d"
   );
-  return { user: user.toObject(), token };
+  return { user: others,accessToken };
 };
 
 export default { login };

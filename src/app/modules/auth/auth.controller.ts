@@ -3,12 +3,10 @@ import authService from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
 
 const login = catchAsync(async (req, res) => {
-  const { user, token } = await authService.login(req.body);
-  const { password,...others } = user;
+  const result = await authService.login(req.body);
   sendResponse(res, {
     message: "User logged in successfully",
-    token: token,
-    data: { ...others },
+    data: result,
   });
 });
 export const authController = { login };

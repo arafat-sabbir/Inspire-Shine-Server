@@ -4,6 +4,7 @@ interface TResponse<T> {
   message: string;
   token?: string;
   data: T;
+  accessToken?: string;
 }
 
 const sendResponse = <T>(res: Response, data: TResponse<T>) => {
@@ -11,7 +12,7 @@ const sendResponse = <T>(res: Response, data: TResponse<T>) => {
     success: true,
     statusCode: 200,
     message: data.message,
-    token: data.token,
+    accessToken: data.token,
     data: data.data,
   });
 };
