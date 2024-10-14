@@ -6,11 +6,28 @@ const create = async (payload: TService) => {
   const service = await ServiceModel.create(payload);
   return service;
 };
+
+
 const getAll = async () => {
-  const services = await ServiceModel.find({ isDeleted: false });
-  if(!services || !services.length) throw new AppError(404, "No Data Found", []);
+  const services = await ServiceModel.aggregate([
+    {
+      $match: { isDeleted: false } // Only find services that are not deleted
+    },
+    {
+      $lookup: {
+        from: "slots", // The name of your slots collection
+        localField: "_id", // The local field from the Service collection
+        foreignField: "service", // The foreign field from the Slot collection
+        as: "slots" // The new field that will hold the array of slots
+      }
+    }
+  ]);
+
+  if (!services || !services.length) throw new AppError(404, "No Data Found", []);
+
   return services;
 };
+
 const getSingle = async (id: string) => {
   const service = await ServiceModel.findById({ _id: id });
   if(!service) throw new AppError(404, "No Data Found", []);

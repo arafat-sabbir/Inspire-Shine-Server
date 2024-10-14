@@ -3,10 +3,13 @@ import { TSlot } from "./slot.interface";
 import SlotModel from "./slot.model";
 
 const create = async (payload: TSlot) => {
-  const { startTime, endTime,date } = payload;
-  const isSlotExist = await SlotModel.findOne({date,startTime})
-  if(isSlotExist){
-    throw new AppError(400,`Slot For Date ${date} And This Time Already Exist`);
+  const { startTime, endTime, date } = payload;
+  const isSlotExist = await SlotModel.findOne({ date, startTime });
+  if (isSlotExist) {
+    throw new AppError(
+      400,
+      `Slot For Date ${date} And This Time Already Exist`
+    );
   }
   const startTimeNumber = parseInt(startTime);
   const endTimeNumber = parseInt(endTime);
@@ -41,8 +44,25 @@ const getAvailableByQuery = async (query: any) => {
     ...newQuery,
     isBooked: "available",
   }).populate("service");
-  if (!slots || !slots.length) throw new AppError(404, "No Data Found", []);
-  return slots;
+  // if (!slots || !slots.length) throw new AppError(404, "No Data Found", []);
+  return slots || [];
 };
 
-export const slotService = { create, getAvailableByQuery };
+const updateSlotStatus = async (id: string, status: string) => {
+  const slot = await SlotModel.findById(id);
+  if(slot?.isBooked==="booked"){
+    throw new AppError(400, "Slot Already Booked");
+  }else{
+    const updatedSlot = await SlotModel.findByIdAndUpdate(id, { isBooked: status }, { new: true });
+    if (!updatedSlot) throw new AppError(404, "No Data Found", []);
+    return updatedSlot;
+  }
+};
+
+
+const getAllSlots = async () => {
+  const slots = await SlotModel.find().populate("service");
+  return slots||[];
+};
+
+export const slotService = { create, getAvailableByQuery,updateSlotStatus,getAllSlots };

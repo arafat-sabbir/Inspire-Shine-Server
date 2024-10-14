@@ -9,4 +9,6 @@ router.post(
   userController.registerUser
 );
 
+router.post("/auth/update-user/:id", userController.updateUser);
+
 export const userRoutes = router;

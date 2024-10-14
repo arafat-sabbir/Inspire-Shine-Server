@@ -5,6 +5,8 @@ import validateRequest from "../../middlewares/validateRequest";
 import AuthorizeRequest from "../../middlewares/auth";
 import { USER_ROLE } from "../user/user.constant";
 const router = express.Router();
+
+// Create New Booking
 router.post(
   "/bookings",
   AuthorizeRequest(USER_ROLE.user),
@@ -12,12 +14,14 @@ router.post(
   bookingController.create
 );
 
+//Get All Bookings
 router.get(
   "/bookings",
   AuthorizeRequest(USER_ROLE.admin),
   bookingController.getAll
 );
 
+//Get My Bookings
 router.get(
   "/my-bookings",
   AuthorizeRequest(USER_ROLE.user),

@@ -6,11 +6,11 @@ import BookingModel from "./booking.model";
 import mongoose from "mongoose";
 
 const create = async (payload: TBooking) => {
+  console.log(payload,"customer");
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
     const slot = await SlotModel.findByIdAndUpdate(payload.slot);
-    console.log(slot);
     if (slot?.isBooked === "booked") {
       throw new AppError(400, "Slot Already Booked");
     }

@@ -10,4 +10,15 @@ const registerUser = catchAsync(async (req, res) => {
   });
 });
 
-export const userController = { registerUser };
+const updateUser = catchAsync(async (req, res) => {
+  const data = req.body;
+  const { id } = req.params;
+  const user = await userService.updateUser({ id: id, phone:data.phone, name: data.name, address: data.address });
+  console.log(user);
+  sendResponse(res, {
+    message: "User Updated successfully",
+    data: user,
+  });
+});
+
+export const userController = { registerUser, updateUser };

@@ -5,7 +5,7 @@ import sendResponse from "../../utils/sendResponse";
 const create = catchAsync(async (req, res) => {
   const { serviceId, slotId, ...others } = req.body;
   const data = {
-    customer: req.user.userId,
+    customer: req.user._id,
     service: req.body.serviceId,
     slot: req.body.slotId,
     ...others,
@@ -25,7 +25,7 @@ const getAll = catchAsync(async (req, res) => {
   });
 });
 const getSingle = catchAsync(async (req, res) => {
-  const result = await bookingService.getSingle(req.user.userId);
+  const result = await bookingService.getSingle(req.user._id);
   sendResponse(res, {
     message: "User bookings retrieved successfully",
     data: result,

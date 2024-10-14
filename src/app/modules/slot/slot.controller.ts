@@ -18,4 +18,21 @@ const getAvailableByQuery = catchAsync(async (req, res) => {
   });
 });
 
-export const slotController = { create,getAvailableByQuery };
+const updateSlotStatus = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await slotService.updateSlotStatus(id, req.body.status);
+  sendResponse(res, {
+    message: "Slot status updated successfully",
+    data: result,
+  });
+});
+
+const getAllSlots = catchAsync(async (req, res) => {
+  const result = await slotService.getAllSlots();
+  sendResponse(res, {
+    message: "All slots retrieved successfully",
+    data: result,
+  });
+});
+
+export const slotController = { create, getAvailableByQuery,updateSlotStatus,getAllSlots };
