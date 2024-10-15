@@ -8,6 +8,11 @@ const serviceSchema = new Schema<TService>(
     price: { type: Number, required: true },
     duration: { type: Number, required: true },
     isDeleted: { type: Boolean, default: false },
+    category:{
+      type: String,
+      enum: ["basic wash", "interior detailing", "exterior shine", "engine cleaning", "headlight restoration", "full service"],
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -1,6 +1,8 @@
+import QueryBuilder from "../../builder/QueryBuilder";
 import AppError from "../../errors/AppError";
 import { TService } from "./service.interface";
 import ServiceModel from "./service.model";
+import { SortOrder } from "mongoose";
 
 const create = async (payload: TService) => {
   const service = await ServiceModel.create(payload);
@@ -8,10 +10,37 @@ const create = async (payload: TService) => {
 };
 
 
-const getAll = async () => {
-  const services = await ServiceModel.aggregate([
+const getAll = async (query: Record<string, unknown>) => {
+  console.log('query', query);
+
+  // Handle categories filter
+  const categories = (query.categories as string)?.split(',');
+  let filterQuery: any = { isDeleted: false }; // Default filter to exclude deleted services
+
+  // Categories filter
+  if (categories?.length > 0 && !categories.includes('all')) {
+    filterQuery.category = { $in: categories };
+  }
+
+  // Search filter
+  if (query.searchTerm) {
+    const searchTerm = query.searchTerm as string;
+    filterQuery.name = { $regex: new RegExp(searchTerm, 'i') }; // Case-insensitive search
+  }
+
+  // Construct sort query
+  const sortQuery: { [key: string]: 1 | -1 } = {}; // Corrected to strictly use 1 or -1
+  const sortField = 'price';
+  const sortOrder = query.sort as 'asc' | 'desc';
+
+  if (query?.sort) {
+    sortQuery[sortField] = sortOrder === 'asc' ? 1 : -1; // Using strictly 1 or -1
+  }
+
+  // Create aggregation pipeline
+  const pipeline = [
     {
-      $match: { isDeleted: false } // Only find services that are not deleted
+      $match: filterQuery // Match services based on the filterQuery
     },
     {
       $lookup: {
@@ -20,13 +49,26 @@ const getAll = async () => {
         foreignField: "service", // The foreign field from the Slot collection
         as: "slots" // The new field that will hold the array of slots
       }
+    },
+    {
+      $sort: sortQuery // Apply sorting based on price
     }
-  ]);
+  ];
 
-  if (!services || !services.length) throw new AppError(404, "No Data Found", []);
+  // Perform the aggregation
+  const data: any = new QueryBuilder(
+    ServiceModel.aggregate(pipeline), // Use aggregate instead of find
+    query
+  ).paginate(); // Pagination
 
-  return services;
+  const services = await data.modelQuery;
+  const totalServices = await ServiceModel.countDocuments(filterQuery); // Count the total services based on filterQuery
+  console.log(services, totalServices);
+  return { services, totalServices };
 };
+
+
+
 
 const getSingle = async (id: string) => {
   const service = await ServiceModel.findById({ _id: id });

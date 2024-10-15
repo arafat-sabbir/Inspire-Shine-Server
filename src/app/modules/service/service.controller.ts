@@ -21,7 +21,7 @@ const getSingle = catchAsync(async (req, res) => {
 
 const getAll = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const service = await serviceService.getAll();
+  const service = await serviceService.getAll(req.query);
   sendResponse(res, {
     message: "Service retrieved successfully",
     data: service,
