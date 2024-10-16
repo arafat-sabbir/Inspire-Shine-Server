@@ -21,6 +21,8 @@ router.get(
   bookingController.getAll
 );
 
+router.post('/confirmBookings',bookingController.bookingPage)
+
 //Get My Bookings
 router.get(
   "/my-bookings",

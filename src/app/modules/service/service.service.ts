@@ -11,7 +11,6 @@ const create = async (payload: TService) => {
 
 
 const getAll = async (query: Record<string, unknown>) => {
-  console.log('query', query);
 
   // Handle categories filter
   const categories = (query.categories as string)?.split(',');
@@ -63,7 +62,6 @@ const getAll = async (query: Record<string, unknown>) => {
 
   const services = await data.modelQuery;
   const totalServices = await ServiceModel.countDocuments(filterQuery); // Count the total services based on filterQuery
-  console.log(services, totalServices);
   return { services, totalServices };
 };
 

@@ -9,9 +9,7 @@ const register = async (payload: TUser) => {
 };
 
 const updateUser = async (payload: {
-  name: string;
-  phone: string;
-  address: string;
+  role:string
   id: string;
 }) => {
   const userExist = await UserModel.findOne({ _id: payload.id });
@@ -22,4 +20,10 @@ const updateUser = async (payload: {
   return updatedUser;
 };
 
-export default { register, updateUser };
+
+const getAllUser = async () => {
+  const users = await UserModel.find();
+  return users;
+}
+
+export default { register, updateUser,getAllUser };

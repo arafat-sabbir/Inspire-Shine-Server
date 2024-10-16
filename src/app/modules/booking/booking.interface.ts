@@ -19,4 +19,7 @@ export type TBooking = {
   vehicleModel: string;
   manufacturingYear: string;
   registrationPlate: string;
+  price: number;
+  isPaid: boolean;
+  transactionId: string;
 };

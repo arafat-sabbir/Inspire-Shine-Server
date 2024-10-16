@@ -13,12 +13,22 @@ const registerUser = catchAsync(async (req, res) => {
 const updateUser = catchAsync(async (req, res) => {
   const data = req.body;
   const { id } = req.params;
-  const user = await userService.updateUser({ id: id, phone:data.phone, name: data.name, address: data.address });
-  console.log(user);
+  const user = await userService.updateUser({
+    id: id,
+    role:data.role
+  });
   sendResponse(res, {
     message: "User Updated successfully",
     data: user,
   });
 });
 
-export const userController = { registerUser, updateUser };
+const getAllUser = catchAsync(async (req, res) => {
+  const users = await userService.getAllUser();
+  sendResponse(res, {
+    message: "All Users retrieved successfully",
+    data: users,
+  });
+});
+
+export const userController = { registerUser, updateUser, getAllUser };

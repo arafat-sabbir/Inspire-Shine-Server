@@ -5,7 +5,6 @@ import UserModel from "../user/user.model";
 import { compareValue, generateToken } from "./auth.utils";
 
 const login = async (payload: TLoginUser) => {
-  console.log(payload.email);
   const user = await UserModel.findOne({ email: payload.email }).select(
     "+password"
   );

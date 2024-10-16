@@ -14,7 +14,6 @@ const create = async (payload: TSlot) => {
   const startTimeNumber = parseInt(startTime);
   const endTimeNumber = parseInt(endTime);
   const serviceTime = (parseInt(endTime) * 60 - parseInt(startTime) * 60) / 60;
-  console.log(serviceTime, startTimeNumber, endTimeNumber);
 
   const slots = [];
 
